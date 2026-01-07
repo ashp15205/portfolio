@@ -164,6 +164,51 @@ body::after {
   will-change: transform;
 }
 
+/* =====================================================
+   MOBILE NAVBAR
+===================================================== */
+@media (max-width: 768px) {
+
+  .navbar {
+    left: 50%;
+    transform: translateX(-50%);
+    
+    padding: 10px 16px;
+    border-radius: 999px;
+
+    background: rgba(10, 18, 40, 0.85);
+    backdrop-filter: blur(18px);
+  }
+
+  .navbar ul {
+    gap: 12px;
+  }
+
+  .navbar a {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Hide indicator on mobile */
+  .nav-indicator {
+    position: absolute;
+    margin-left: 25px;
+  }
+}
+@media (max-width: 420px) {
+  .navbar {
+    padding: 8px 12px;
+  }
+
+  .navbar ul {
+    gap: 8px;
+  }
+
+  .navbar a {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}
 
 /* METEORS */
 .meteors .meteor {
@@ -396,13 +441,105 @@ body::after {
   60% { transform: rotate(0deg); }
   100% { transform: rotate(0deg); }
 }
+/* =====================================================
+   HERO / HOME — MOBILE
+===================================================== */
+@media (max-width: 768px) {
+
+  .hero {
+    min-height: auto;
+    padding: 110px 6% 80px;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    text-align: center;
+  }
+
+  /* Move GIF on top */
+  .hero-media {
+    order: -1;
+  }
+
+  .gif-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  /* TEXT */
+  .hero-text h1 {
+    font-size: 2.4rem;
+    line-height: 1.15;
+  }
+
+  .hero-text h2 {
+    font-size: 1.2rem;
+  }
+
+  .location {
+    font-size: 0.9rem;
+  }
+
+  /* ACTIONS */
+  .actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+
+  .socials a {
+    width: 44px;
+    height: 44px;
+    font-size: 1.05rem;
+  }
+
+  .resume-btn {
+    height: 44px;
+    padding: 0 22px;
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 420px) {
+
+  .hero {
+    padding: 100px 5% 70px;
+  }
+
+  .hero-text h1 {
+    font-size: 2.1rem;
+  }
+
+  .hero-text h2 {
+    font-size: 1.05rem;
+  }
+
+  .gif-wrapper {
+    max-width: 260px;
+  }
+
+  .socials a {
+    width: 42px;
+    height: 42px;
+  }
+
+  .resume-btn {
+    height: 42px;
+    padding: 0 20px;
+    font-size: 0.9rem;
+  }
+}
 
 /* Update .section for Projects */
 .section {
   min-height: 100vh;
   scroll-snap-align: start;
   padding: 120px 8%;
-  scroll-margin-top: 20px; /* Increased from 20px */
+  scroll-margin-top: -10px; /* Increased from 20px */
 }
 
 
@@ -585,7 +722,7 @@ body::after {
 /* Remove negative margin from projects-strip */
 .projects-strip {
   display: flex;
-  gap: 25px;
+  gap: 20px;
   padding: 40px; /* Keep this */
   overflow-x: auto;
   overflow-y: visible;
@@ -594,7 +731,7 @@ body::after {
   perspective: 1600px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  margin-top: -50px; /* Changed from -40px to 0 */
+  margin-top: -40px; /* Changed from -40px to 0 */
   scroll-behavior: auto;
 }
 
@@ -616,7 +753,6 @@ body::after {
   will-change: transform, opacity;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  transition: none; /* Remove all CSS transitions */
   pointer-events: auto;
 
 }
@@ -628,45 +764,9 @@ body::after {
 }
 
 
-/* ULTRA WIDE CAROUSEL - More Cards Visible */
-.project-panel:nth-child(2),
-.project-panel:nth-child(10) {
-  transform: perspective(1400px) rotateY(-65deg) scale(0.4) translateY(100px) translateZ(-280px);
-  opacity: 0.15;
-}
-
-.project-panel:nth-child(3),
-.project-panel:nth-child(9) {
-  transform: perspective(1400px) rotateY(-58deg) scale(0.52) translateY(85px) translateZ(-200px);
-  opacity: 0.3;
-}
-
-.project-panel:nth-child(4),
-.project-panel:nth-child(8) {
-  transform: perspective(1400px) rotateY(-48deg) scale(0.65) translateY(68px) translateZ(-140px);
-  opacity: 0.45;
-}
-
-.project-panel:nth-child(5),
-.project-panel:nth-child(7) {
-  transform: perspective(1400px) rotateY(-30deg) scale(0.8) translateY(45px) translateZ(-70px);
-  opacity: 0.7;
-}
-
-.project-panel:nth-child(6) {
-  transform: perspective(1400px) rotateY(0deg) scale(1.2) translateY(-20px) translateZ(80px);
-  opacity: 1;
-  z-index: 10;
-  box-shadow: 
-    0 40px 80px rgba(0,0,0,0.9),
-    0 0 30px rgba(255,255,255,0.1);
-}
-
-
 
 /* Hover effect */
 .project-panel:hover {
-  transform: rotateY(0deg) scale(1.06) translateY(-10px) !important;
   box-shadow: 0px 10px 28px rgba(21, 0, 255, 0.6);
   opacity: 1 !important;
   background: rgb(0, 0, 0);
@@ -803,17 +903,29 @@ body::after {
   -webkit-mask-image: url("assets/github.png");
 }
 
-/* Mobile responsive */
+/* =====================================================
+   PROJECTS — MOBILE AUTO SCROLL MODE
+===================================================== */
 @media (max-width: 768px) {
+
   .projects-strip {
-    padding: 32px 6vw;
-    gap: 20px;
+    perspective: none !important;
   }
+
   .project-panel {
-    flex: 0 0 280px;
-    height: 450px;
+    transform: none !important;
+    opacity: 1 !important;
+    will-change: auto !important;
+  }
+
+  /* Kill all nth-child 3D rules */
+  .project-panel:nth-child(n) {
+    transform: none !important;
+    opacity: 1 !important;
   }
 }
+
+
 
 /* ===============================
    CONTACT SECTION LAYOUT
@@ -1106,3 +1218,42 @@ color: #010101;
   }
 }
 
+.footer {
+  width: 100%;
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
+  background: transparent;
+}
+
+.footer .name {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Optional subtle hover */
+.footer .name:hover {
+  opacity: 0.85;
+}
+
+/* ===============================
+   CONTACT ICONS — MOBILE CENTER
+================================ */
+@media (max-width: 768px) {
+
+  .contact-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-left .actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .contact-left .socials {
+    justify-content: center;
+  }
+}

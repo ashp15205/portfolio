@@ -297,180 +297,72 @@ if (contactForm) {
     );
   });
 }
-/* ===============================
-   PROJECT STRIP - ZERO GLITCH VERSION
-================================ */
+/* =====================================================
+   PROJECT STRIP — BLINK-FREE INFINITE LOOP
+===================================================== */
 
-const strip = document.querySelector('.projects-strip');
-const originalPanels = document.querySelectorAll('.project-panel');
+const strip = document.querySelector(".projects-strip");
+const panels = Array.from(strip?.children || []);
 
-if (strip && originalPanels.length) {
-  const originalHTML = strip.innerHTML;
-  const cloneBefore = strip.cloneNode(false);
-  const cloneAfter = strip.cloneNode(false);
+if (strip && panels.length) {
+  const GAP = 25;
+  const SPEED = 0.6;
 
-  originalPanels.forEach(panel => {
-    cloneBefore.appendChild(panel.cloneNode(true));
-    cloneAfter.appendChild(panel.cloneNode(true));
-  });
+  // Clone once: before + after
+  panels.forEach(p => strip.appendChild(p.cloneNode(true)));
+  panels.forEach(p => strip.insertBefore(p.cloneNode(true), strip.firstChild));
 
-  strip.innerHTML = cloneBefore.innerHTML + originalHTML + cloneAfter.innerHTML;
+  const total = panels.length;
+  let panelWidth = panels[0].offsetWidth + GAP;
+  let baseOffset = panelWidth * total;
 
-  const allPanels = document.querySelectorAll('.project-panel');
-  const totalPanels = originalPanels.length;
-  
-  let scrollSpeed = 2.6; // Slower = smoother
-  let isPaused = false;
-  let userScrolling = false;
-  let scrollTimeout;
-  let animationId;
-  let lastScrollLeft = 0;
-  let isResetting = false; // Prevent updates during reset
+  strip.scrollLeft = baseOffset;
 
-  const getPanelWidth = () => allPanels[0].offsetWidth + 25; // Match your gap
+  let paused = false;
 
-  // Smooth boundary reset with NO visible jump
-  function checkBoundaries() {
-    if (isResetting) return;
-    
-    const panelWidth = getPanelWidth();
-    const singleSetWidth = panelWidth * totalPanels;
-    const scrollPos = strip.scrollLeft;
-    
-    // Reset when entering clone zones (with larger buffer to prevent flicker)
-    if (scrollPos >= singleSetWidth * 2 - panelWidth * 2) {
-      isResetting = true;
-      const offset = scrollPos - (singleSetWidth * 2);
-      strip.scrollLeft = singleSetWidth + offset;
-      lastScrollLeft = strip.scrollLeft;
-      requestAnimationFrame(() => {
-        isResetting = false;
-      });
-    } else if (scrollPos <= panelWidth * 2) {
-      isResetting = true;
-      const offset = scrollPos;
-      strip.scrollLeft = singleSetWidth + offset;
-      lastScrollLeft = strip.scrollLeft;
-      requestAnimationFrame(() => {
-        isResetting = false;
-      });
-    }
-  }
+  function updateTransforms() {
+    const center = strip.offsetWidth / 2;
 
-  // Unified update function with performance optimization
-  function updatePanels() {
-    if (isResetting) return; // Skip updates during reset
-    
-    const rect = strip.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
+    for (const panel of strip.children) {
+      const x = panel.offsetLeft - strip.scrollLeft + panelWidth / 2;
+      const dist = (x - center) / strip.offsetWidth;
 
-    allPanels.forEach(panel => {
-      const pRect = panel.getBoundingClientRect();
-      const panelCenter = pRect.left + pRect.width / 2;
-      const dist = (panelCenter - centerX) / rect.width;
+      const rotate = dist * -30;
+      const scale = 1 - Math.min(Math.abs(dist) * 0.3, 0.25);
+      const translateY = Math.abs(dist) * 14;
+      const opacity = 1 - Math.min(Math.abs(dist) * 0.6, 0.5);
 
-      // Smooth easing for rotation
-      const rotate = dist * -40;
-      const scale = Math.max(0.75, 1.05 - Math.abs(dist) * 0.25);
-      const opacity = Math.max(0.3, 1 - Math.abs(dist) * 0.5);
-      const translateY = Math.abs(dist) * 18;
-
-      // Use translate3d for hardware acceleration
-      panel.style.transform = 
+      panel.style.transform =
         `translate3d(0, ${translateY}px, 0) rotateY(${rotate}deg) scale(${scale})`;
       panel.style.opacity = opacity;
-    });
+    }
   }
 
-  // Auto-scroll with frame-perfect timing
-  function autoScroll() {
-    if (!isPaused && !userScrolling && !isResetting) {
-      strip.scrollLeft += scrollSpeed;
-      
-      // Batch updates to prevent reflow
-      if (Math.abs(strip.scrollLeft - lastScrollLeft) > 0.5) {
-        checkBoundaries();
-        updatePanels();
-        lastScrollLeft = strip.scrollLeft;
+  function loop() {
+    if (!paused) {
+      strip.scrollLeft += SPEED;
+
+      // 🔑 INVISIBLE RECENTER — NO BLINK
+      if (strip.scrollLeft >= baseOffset * 2) {
+        strip.scrollLeft -= baseOffset;
+      } else if (strip.scrollLeft <= 0) {
+        strip.scrollLeft += baseOffset;
       }
     }
-    animationId = requestAnimationFrame(autoScroll);
+
+    updateTransforms();
+    requestAnimationFrame(loop);
   }
 
-  // Throttled scroll handler to prevent lag
-  let scrollRAF = null;
-  strip.addEventListener('scroll', () => {
-    const currentScroll = strip.scrollLeft;
-    
-    // Detect user scroll (large sudden changes)
-    if (Math.abs(currentScroll - lastScrollLeft) > scrollSpeed * 3) {
-      userScrolling = true;
-      clearTimeout(scrollTimeout);
-      
-      scrollTimeout = setTimeout(() => {
-        userScrolling = false;
-        lastScrollLeft = currentScroll;
-      }, 250);
-    }
-    
-    // Throttle updates using RAF
-    if (scrollRAF === null) {
-      scrollRAF = requestAnimationFrame(() => {
-        if (!isResetting) {
-          checkBoundaries();
-          updatePanels();
-        }
-        scrollRAF = null;
-      });
-    }
-  }, { passive: true });
+  strip.addEventListener("mouseenter", () => paused = true);
+  strip.addEventListener("mouseleave", () => paused = false);
 
-  // Pause on hover
-  strip.addEventListener('mouseenter', () => {
-    isPaused = true;
+  window.addEventListener("resize", () => {
+    panelWidth = panels[0].offsetWidth + GAP;
+    baseOffset = panelWidth * total;
+    strip.scrollLeft = baseOffset;
   });
 
-  strip.addEventListener('mouseleave', () => {
-    isPaused = false;
-  });
-
-  // Debounced resize handler
-  let resizeRAF = null;
-  window.addEventListener('resize', () => {
-    if (resizeRAF) cancelAnimationFrame(resizeRAF);
-    
-    resizeRAF = requestAnimationFrame(() => {
-      isResetting = true;
-      const panelWidth = getPanelWidth();
-      strip.scrollLeft = panelWidth * totalPanels;
-      lastScrollLeft = strip.scrollLeft;
-      updatePanels();
-      
-      setTimeout(() => {
-        isResetting = false;
-      }, 50);
-    });
-  });
-
-  // Proper initialization sequence
-  function initialize() {
-    const panelWidth = getPanelWidth();
-    strip.scrollLeft = panelWidth * totalPanels;
-    lastScrollLeft = strip.scrollLeft;
-    
-    requestAnimationFrame(() => {
-      updatePanels();
-      
-      requestAnimationFrame(() => {
-        autoScroll();
-      });
-    });
-  }
-
-  // Wait for layout to settle before initializing
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialize);
-  } else {
-    requestAnimationFrame(initialize);
-  }
+  requestAnimationFrame(loop);
 }
+
