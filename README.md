@@ -7,9 +7,7 @@ Built with a strong focus on clean UI, smooth interactions, and performance.
 
 
 
-© 2026 • Made by **Ashish Patil**
-
 ⭐ If you like this portfolio, consider starring the repository — it really helps and is much appreciated!
-
+#### © 2026 • Made by **Ashish Patil**
 
 
