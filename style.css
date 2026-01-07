@@ -45,7 +45,7 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(87, 87, 189, 0.055);
+  background: rgba(49, 49, 51, 0.299);
   z-index: -1;
 }
 
@@ -250,25 +250,21 @@ body::after {
 ================================ */
 
 .hero-text h1 {
-  font-size: 4rem;
+  font-size: 4.5rem;
   font-weight: 800;
   line-height: 1.2;
 }
-
-.hero-text h1 span {
+.hero-text h1 .name-text {
   background: linear-gradient(
-  120deg,
-  #00e5ff 10%,
-  #ffffff 30%,
-  #a855f7 55%,
-  #6fbaff 80%
-);
-
+    90deg,
+    #319bff 0%,     /* soft blue */
+    #42ffcd 35%,    /* near-white */
+    #336dff 65%,    /* muted violet */
+    #29ff50 100%
+  );
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  animation: shine 3s linear infinite;
 }
 
 .location {
@@ -378,24 +374,44 @@ body::after {
 
 .gif-wrapper {
   max-width: 420px;
-  width: 100%;
-  padding: 10px;
+  height: 260px;
+  overflow: hidden;
   border-radius: 20px;
 
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgb(70, 116, 158);
+  /* 🔥 animated gradient border */
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#050b1a, #050b1a) padding-box,
+    linear-gradient(
+      120deg,
+      #5fb3ff,
+      #9b8cff,
+      #5fb3ff
+    ) border-box;
+
+  background-size: 100% 100%, 300% 300%;
+  animation: borderShift 5s linear infinite;
 
   box-shadow:
-    0 0 25px rgba(111,186,255,0.25);
+    0 0 25px rgba(111, 185, 255, 0.8);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes borderShift {
+  0%   { background-position: 0% 0%, 0% 50%; }
+  100% { background-position: 0% 0%, 300% 50%; }
 }
 
 .gif-wrapper img {
-  width: 100%;
+  width: 100%;            /* trims left/right empty space */
   height: auto;
-  border-radius: 14px;
-  display: block;
+  object-fit: cover;
+  object-position: 50% 55%; /* 🎯 centers laptop perfectly */
 }
+
+
 
 /* subtle hover (optional) */
 .gif-wrapper:hover {
@@ -432,7 +448,7 @@ body::after {
   background: none !important;
   -webkit-text-fill-color: initial !important;
   color: initial !important;
-  filter: none !important;
+  margin-left: -10px;
 }
 
 .wave {
@@ -481,6 +497,7 @@ body::after {
   .hero-text h1 {
     font-size: 2.4rem;
     line-height: 1.15;
+    text-align: center;
   }
 
   .hero-text h2 {
@@ -522,6 +539,7 @@ body::after {
 
   .hero-text h1 {
     font-size: 2.1rem;
+    text-align: center;
   }
 
   .hero-text h2 {
