@@ -221,82 +221,7 @@ if (editor && !editor.querySelector(".coding-stats")) {
   });
 }
 
-const audioPlayer = document.getElementById("audioPlayer");
-const bgMusic = document.getElementById("bgMusic");
 
-bgMusic.volume = 0.4;
-let isPlaying = false;
-
-/* play on first user interaction */
-function startMusicOnce() {
-  bgMusic.play().then(() => {
-    audioPlayer.classList.add("playing");
-    isPlaying = true;
-  }).catch(() => {
-    // autoplay blocked (rare case)
-  });
-
-  window.removeEventListener("click", startMusicOnce);
-  window.removeEventListener("scroll", startMusicOnce);
-  window.removeEventListener("keydown", startMusicOnce);
-}
-
-/* attach once */
-window.addEventListener("click", startMusicOnce, { once: true });
-window.addEventListener("scroll", startMusicOnce, { once: true });
-window.addEventListener("keydown", startMusicOnce, { once: true });
-
-/* manual toggle */
-audioPlayer.addEventListener("click", () => {
-  if (!isPlaying) {
-    bgMusic.play();
-    audioPlayer.classList.add("playing");
-  } else {
-    bgMusic.pause();
-    audioPlayer.classList.remove("playing");
-  }
-  isPlaying = !isPlaying;
-});
-
-document.querySelectorAll('a[href]').forEach(link => {
-  const href = link.getAttribute('href');
-
-  if (href && !href.startsWith('#')) {
-    link.setAttribute('target', '_blank');
-    link.setAttribute('rel', 'noopener noreferrer');
-  }
-});
-
-/* ===============================
-   EMAILJS CONTACT FORM
-================================ */
-
-const contactForm = document.getElementById("contact-form");
-const statusMsg = document.getElementById("form-status");
-
-if (contactForm) {
-  contactForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    emailjs.sendForm(
-      "service_dl80ck6",
-      "template_p22lqo8",
-      this
-    ).then(
-      () => {
-        statusMsg.style.display = "block";
-        statusMsg.textContent = "Message sent successfully 🚀";
-        contactForm.reset();
-      },
-      (error) => {
-        statusMsg.style.display = "block";
-        statusMsg.style.color = "#ff6b8a";
-        statusMsg.textContent = "Something went wrong. Try again.";
-        console.error(error);
-      }
-    );
-  });
-}
 /* =====================================================
    PROJECT STRIP — BLINK-FREE INFINITE LOOP
 ===================================================== */
@@ -306,7 +231,7 @@ const panels = Array.from(strip?.children || []);
 
 if (strip && panels.length) {
   const GAP = 25;
-  const SPEED = 0.6;
+  const SPEED = 1.2;
 
   // Clone once: before + after
   panels.forEach(p => strip.appendChild(p.cloneNode(true)));
@@ -366,3 +291,91 @@ if (strip && panels.length) {
   requestAnimationFrame(loop);
 }
 
+/* ===============================
+   FORMSPREE SUBMIT HANDLER
+================================ */
+
+const form = document.querySelector(".contact-form");
+const status = document.getElementById("form-status");
+
+if (form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    status.style.display = "none";
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        form.reset();
+        status.style.display = "block";
+
+        // Optional auto-hide
+        setTimeout(() => {
+          status.style.display = "none";
+        }, 5000);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      alert("Network error. Please try again later.");
+    }
+  });
+}
+
+/* ===============================
+   ROBUST AUTO PLAY HANDLER
+================================ */
+const audioPlayer = document.getElementById("audioPlayer");
+const bgMusic = document.getElementById("bgMusic");
+
+/**
+ * Attempts to play audio and handles browser restrictions
+ */
+const startAudio = () => {
+  bgMusic.play()
+    .then(() => {
+      // Autoplay started successfully
+      audioPlayer.classList.add("playing");
+    })
+    .catch(() => {
+      console.log("Autoplay blocked. Music will start on first user interaction.");
+      
+      // Fallback: Start music on the very first click anywhere on the page
+      const playOnInteraction = () => {
+        bgMusic.play().then(() => {
+          audioPlayer.classList.add("playing");
+          // Remove listener after success to prevent re-triggering
+          document.removeEventListener("click", playOnInteraction);
+        });
+      };
+      
+      document.addEventListener("click", playOnInteraction);
+    });
+};
+
+// Try to play when the window finishes loading
+window.addEventListener("load", startAudio);
+
+/* ===============================
+   MANUAL TOGGLE (USER CONTROL)
+================================ */
+audioPlayer.addEventListener("click", (e) => {
+  // Prevent the global document "click" fallback from interference
+  e.stopPropagation(); 
+
+  if (bgMusic.paused) {
+    bgMusic.play();
+    audioPlayer.classList.add("playing");
+  } else {
+    bgMusic.pause();
+    audioPlayer.classList.remove("playing");
+  }
+});

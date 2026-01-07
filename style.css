@@ -45,7 +45,7 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(5, 11, 24, 0.43);
+  background: rgba(87, 87, 189, 0.055);
   z-index: -1;
 }
 
@@ -250,20 +250,30 @@ body::after {
 ================================ */
 
 .hero-text h1 {
-  font-size: 3.8rem;
+  font-size: 4rem;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .hero-text h1 span {
-  background: linear-gradient(90deg, #6fbaff, #9b7bff);
+  background: linear-gradient(
+  120deg,
+  #00e5ff 10%,
+  #ffffff 30%,
+  #a855f7 55%,
+  #6fbaff 80%
+);
+
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  animation: shine 3s linear infinite;
 }
 
 .location {
   margin: 14px 0 6px;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: rgba(235,245,255,0.75);
 }
 
@@ -274,8 +284,8 @@ body::after {
 
 .hero-text h2 {
   margin-top: 18px;
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.9rem;
+  font-weight: 700;
   color: rgba(235,245,255,0.9);
 }
 
@@ -539,7 +549,7 @@ body::after {
   min-height: 100vh;
   scroll-snap-align: start;
   padding: 120px 8%;
-  scroll-margin-top: -10px; /* Increased from 20px */
+  scroll-margin-top: 15px; /* Increased from 20px */
 }
 
 
@@ -1047,7 +1057,7 @@ color: #010101;
 }
 
 /* ===============================
-   FLOATING AUDIO DISC PLAYER
+   EXPANDABLE MUSIC PLAYER
 ================================ */
 
 .audio-player {
@@ -1056,52 +1066,170 @@ color: #010101;
   right: 28px;
   z-index: 9999;
 
-  width: 64px;
-  height: 64px;
-
-  cursor: pointer;
-}
-
-/* disc */
-.disc {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-
-  background: radial-gradient(
-    circle,
-    #efeded 18%,
-    #111 20%,
-    #e0dbdb 35%,
-    #050505 36%
-  );
-
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 16px;
+
+  height: 68px;
+  width: 68px;
+  padding: 4px;
+
+  border-radius: 999px;
+  background: linear-gradient(
+    120deg,
+    #00f5ff 20%,
+    #006aff 40%,
+    #3700ff 60%
+  );
+
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.45),
+    inset 0 0 0 1px rgba(120,180,255,0.15);
+
+  overflow: hidden;
+  cursor: pointer;
+
+  transition: width 0.45s cubic-bezier(.22,.61,.36,1);
+}
+
+.audio-player:hover {
+  width: 220px;
+}
+
+
+/* ===============================
+   DISC (PERFECT CIRCLE)
+================================ */
+
+.disc {
+  position: relative;
+  width: 59px;
+  height: 59px;
+  border-radius: 50%;
+
+  overflow: hidden;
+  flex-shrink: 0;
+
+  transform: translateZ(0);
+  will-change: transform;
 
   box-shadow:
-    0 0 18px rgb(165, 211, 255);
+    0 0 20px rgba(130,193,252,0.9),
+    0 0 40px rgba(130,193,252,0.6);
 }
 
-/* album cover */
 .disc img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  border-radius: 50%;
 }
 
-/* rotation animation */
-@keyframes spin {
+
+
+/* ===============================
+   MUSIC INFO
+================================ */
+
+.music-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  opacity: 0;
+  transform: translateX(-10px);
+  white-space: nowrap;
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.audio-player:hover .music-info {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* TEXT */
+.track .song {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.track .artist {
+  font-size: 0.75rem;
+  color: rgb(255, 255, 255);
+}
+
+/* ===============================
+   BEATS ANIMATION
+================================ */
+
+.beats {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 14px;
+}
+
+.beats span {
+  width: 3px;
+  height: 6px;
+  background: #0d0000;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation: beat 1s infinite ease-in-out;
+}
+
+.beats span:nth-child(2) { animation-delay: .15s }
+.beats span:nth-child(3) { animation-delay: .3s }
+.beats span:nth-child(4) { animation-delay: .45s }
+
+@keyframes beat {
+  0%,100% { height: 4px }
+  50% { height: 14px }
+}
+@keyframes discSpin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
-/* playing state */
-.audio-player.playing .disc {
-  animation: spin 4s linear infinite;
+/* STOP BEATS WHEN PAUSED */
+.audio-player:not(.playing) .beats span {
+  animation: none;
+  height: 4px;
+  opacity: 0.4;
 }
+/* ===============================
+   MOBILE – DISC ONLY MODE
+================================ */
+/* FORCE CONSISTENT RENDERING (NO PADDING SHIFT) */
+.disc {
+  transform: translateZ(0); /* 🔑 fixes visual jump */
+}
+.audio-player:not(.playing) .disc {
+  animation: none;
+  transform: rotate(0deg) translateZ(0);
+}
+.audio-player.playing .disc {
+  animation: discSpin 4s linear infinite;
+}
+
+
+@media (hover: none) and (pointer: coarse) {
+  .audio-player {
+    width: 68px !important;
+  }
+
+  .music-info,
+  .beats {
+    display: none !important;
+  }
+}
+
+
 /* =====================================================
    RESUME BUTTON (PRIMARY CTA)
 ===================================================== */

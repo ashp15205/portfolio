@@ -81,7 +81,7 @@
             <a href="https://github.com/ashp15205"><i class="fa-brands fa-github"></i></a>
             <a href="https://www.linkedin.com/in/ashishpatil2005/"><i class="fa-brands fa-linkedin-in"></i></a>
           </div>
-
+          
           <a href="assets/resume.pdf" class="resume-btn" target="_blank" rel="noopener noreferrer">
             Resume
           </a>
@@ -228,9 +228,9 @@
 
     </div>
   </section>
-<section id="projects" class="section">
+  <section id="projects" class="section">
     <h2>Projects</h2>
-    
+
     <div class="projects-strip">
       <!-- Project 1 - DailyCommit -->
       <div class="project-panel">
@@ -239,7 +239,8 @@
         </div>
         <div class="project-content">
           <h3>DailyCommit</h3>
-          <p>A minimal web app to track daily coding progress using a calendar heatmap. Built to encourage consistency and focus.</p>
+          <p>A minimal web app to track daily coding progress using a calendar heatmap. Built to encourage consistency
+            and focus.</p>
           <div class="project-tech">
             <span>Firebase</span>
             <span>HTML</span>
@@ -247,8 +248,10 @@
             <span>JS</span>
           </div>
           <div class="project-links">
-            <a href="https://daily-commit-tracker.vercel.app/" target="_blank" class="project-icon live" aria-label="Live Demo"></a>
-            <a href="https://github.com/ashp15205/DAILY-COMMIT" target="_blank" class="project-icon github" aria-label="GitHub Repository"></a>
+            <a href="https://daily-commit-tracker.vercel.app/" target="_blank" class="project-icon live"
+              aria-label="Live Demo"></a>
+            <a href="https://github.com/ashp15205/DAILY-COMMIT" target="_blank" class="project-icon github"
+              aria-label="GitHub Repository"></a>
           </div>
         </div>
       </div>
@@ -261,32 +264,37 @@
           <h3>CET-BUDDY</h3>
           <p>🎓 A tool that helps MHT-CET aspirants instantly find eligible engineering colleges in Maharashtra.</p>
           <div class="project-tech">
-            <span>HTML</span>
-            <span>CSS</span>
             <span>JavaScript</span>
+            <span>Python</span>
           </div>
           <div class="project-links">
-            <a href="https://cet-buddy.vercel.app/" target="_blank" class="project-icon live" aria-label="Live Demo"></a>
-            <a href="https://github.com/ashp15205/CET-BUDDY" target="_blank" class="project-icon github" aria-label="GitHub Repository"></a>
+            <a href="https://cet-buddy.vercel.app/" target="_blank" class="project-icon live"
+              aria-label="Live Demo"></a>
+            <a href="https://github.com/ashp15205/CET-BUDDY" target="_blank" class="project-icon github"
+              aria-label="GitHub Repository"></a>
           </div>
         </div>
       </div>
+
       <div class="project-panel">
         <div class="project-image">
-          <img src="assets/2.png" alt="CET-BUDDY">
+          <img src="assets/4.png" alt="mental_health">
         </div>
         <div class="project-content">
-          <h3>CET-BUDDY</h3>
-          <p>🎓 A tool that helps MHT-CET aspirants instantly find eligible engineering colleges in Maharashtra.</p>
+          <h3>HuMaan</h3>
+          <p>HuMaan is an AI-driven, confidential, and empathetic mental wellness platform designed specifically for
+            students and young adults.</p>
           <div class="project-tech">
-            <span>HTML</span>
-            <span>CSS</span>
+            <span>Python</span>
             <span>JavaScript</span>
           </div>
           <div class="project-links">
-            <a href="https://cet-buddy.vercel.app/" target="_blank" class="project-icon live" aria-label="Live Demo"></a>
-            <a href="https://github.com/ashp15205/CET-BUDDY" target="_blank" class="project-icon github" aria-label="GitHub Repository"></a>
+            <a href="https://humaan-mental-wellness-companion.vercel.app/" target="_blank" class="project-icon live"
+              aria-label="Live Demo"></a>
+            <a href="https://github.com/ashp15205/HUMAAN-MENTAL-WELLNESS-COMPANION" target="_blank"
+              class="project-icon github" aria-label="GitHub Repository"></a>
           </div>
+
         </div>
       </div>
       <!-- Project 3 - ULTRON -->
@@ -303,14 +311,36 @@
             <span>React</span>
           </div>
           <div class="project-links">
-            <a href="https://github.com/ashp15205/ULTRON-MultipurposeChatbot" target="_blank" class="project-icon github" aria-label="GitHub Repository"></a>
+            <a href="https://github.com/ashp15205/ULTRON-MultipurposeChatbot" target="_blank"
+              class="project-icon github" aria-label="GitHub Repository"></a>
           </div>
         </div>
       </div>
-      
-      
+
+      <div class="project-panel">
+        <div class="project-image">
+          <img src="assets/5.png" alt="portfolio">
+        </div>
+        <div class="project-content">
+          <h3>Portfolio</h3>
+          <p>A modern, responsive developer portfolio showcasing my projects, skills, and experience.
+            Built with a strong focus on clean UI, smooth interactions, and performance..</p>
+          <div class="project-tech">
+            <span>JavaScript</span>
+            <span>HTML</span>
+            <span>CSS</span>
+          </div>
+          <div class="project-links">
+            <a href="https://ashish-patil-portfolio.vercel.app/" target="_blank" class="project-icon live"
+              aria-label="Live Demo"></a>
+            <a href="https://github.com/ashp15205/portfolio" target="_blank" class="project-icon github"
+              aria-label="GitHub Repository"></a>
+          </div>
+
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
 
 
@@ -340,13 +370,16 @@
 
 
       <!-- RIGHT FORM -->
-      <form class="contact-form" id="contact-form">
-        <input type="text" name="user_name" placeholder="Your Name" required>
-        <input type="email" name="user_email" placeholder="Your Email" required>
+      <form action="https://formspree.io/f/mkogdjln" method="POST" class="contact-form">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="text" name="_gotcha" style="display:none">
+
+        <input type="email" name="email" placeholder="Your Email" required />
         <textarea name="message" placeholder="Your Message" required></textarea>
 
+
         <button type="submit" class="btn-apple">
-          Send Message 
+          Send Message
         </button>
         <p id="form-status" style="margin-top:14px;color:#a0d1ff;display:none;">
           Message sent successfully 🚀
@@ -358,17 +391,29 @@
   </section>
   <!-- AUDIO PLAYER -->
   <div class="audio-player" id="audioPlayer">
-
-    <div class="disc">
-      <img src="assets/cover.jpg" alt="Music Cover">
-    </div>
-    <audio id="bgMusic" src="assets/music.mp3" preload="auto" loop></audio>
+  <div class="disc">
+    <img src="assets/cover.jpg" alt="Music Cover">
   </div>
+
+  <div class="music-info">
+    <div class="track">
+      <span class="song">COURTSIDE</span><br>
+      <span class="artist">by Karan Aujla</span>
+    </div>
+
+    <div class="beats">
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="assets/music.mp3" preload="auto" loop></audio>
+</div>
+
   <footer class="footer">
-  <p>
-    Made by <span class="name">Ashish Patil</span> © 2026
-  </p>
-</footer>
+    <p>
+      Made by <span class="name">Ashish Patil</span> © 2026
+    </p>
+  </footer>
 
 
 </body>
