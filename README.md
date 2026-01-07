@@ -6,6 +6,10 @@ Built with a strong focus on clean UI, smooth interactions, and performance.
 ### 🌐 Live Demo 
 
 
-**⭐ Star the repo if you like it!**
+
+© 2026 • Made by **Ashish Patil**
+
+⭐ If you like this portfolio, consider starring the repository — it really helps and is much appreciated!
+
 
 
