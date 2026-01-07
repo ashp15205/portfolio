@@ -4,10 +4,11 @@ A modern, responsive developer portfolio showcasing my projects, skills, and exp
 Built with a strong focus on clean UI, smooth interactions, and performance.
 
 ### 🌐 Live Demo 
+<br>
 
 
-
-⭐ If you like this portfolio, consider starring the repository — it really helps and is much appreciated!
+⭐ Star the repo if you like it! 
+<br>
 #### © 2026 • Made by **Ashish Patil**
 
 
