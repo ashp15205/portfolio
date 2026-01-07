@@ -223,55 +223,66 @@ if (editor && !editor.querySelector(".coding-stats")) {
 
 
 /* =====================================================
-   PROJECT STRIP — BLINK-FREE INFINITE LOOP
+   PROJECT STRIP — PERFECT PING-PONG (5 CARDS)
 ===================================================== */
-
 const strip = document.querySelector(".projects-strip");
 const panels = Array.from(strip?.children || []);
 
 if (strip && panels.length) {
-  const GAP = 25;
-  const SPEED = 1.2;
+  const GAP = 25; 
+  let speed = 2.0; 
+  const MAX_SPEED = 2.5; 
 
-  // Clone once: before + after
-  panels.forEach(p => strip.appendChild(p.cloneNode(true)));
-  panels.forEach(p => strip.insertBefore(p.cloneNode(true), strip.firstChild));
+  // 1. Reset Content (No Clones)
+  strip.innerHTML = "";
+  panels.forEach(p => strip.appendChild(p));
 
-  const total = panels.length;
-  let panelWidth = panels[0].offsetWidth + GAP;
-  let baseOffset = panelWidth * total;
+  // 2. Set dynamic padding so end cards can reach middle
+  const setPadding = () => {
+    const sidePadding = strip.offsetWidth / 2 - (panels[0].offsetWidth / 2);
+    strip.style.paddingLeft = `${sidePadding}px`;
+    strip.style.paddingRight = `${sidePadding}px`;
+  };
 
-  strip.scrollLeft = baseOffset;
+  setPadding();
 
+  // 3. Animation Logic
   let paused = false;
 
   function updateTransforms() {
     const center = strip.offsetWidth / 2;
+    const stripRect = strip.getBoundingClientRect();
 
     for (const panel of strip.children) {
-      const x = panel.offsetLeft - strip.scrollLeft + panelWidth / 2;
-      const dist = (x - center) / strip.offsetWidth;
+      const rect = panel.getBoundingClientRect();
+      const panelCenter = rect.left - stripRect.left + rect.width / 2;
+      const dist = (panelCenter - center) / strip.offsetWidth;
 
-      const rotate = dist * -30;
-      const scale = 1 - Math.min(Math.abs(dist) * 0.3, 0.25);
-      const translateY = Math.abs(dist) * 14;
+      const rotate = dist * -25;
+      const scale = 1 - Math.min(Math.abs(dist) * 0.2, 0.2);
       const opacity = 1 - Math.min(Math.abs(dist) * 0.6, 0.5);
 
-      panel.style.transform =
-        `translate3d(0, ${translateY}px, 0) rotateY(${rotate}deg) scale(${scale})`;
+      panel.style.transform = `rotateY(${rotate}deg) scale(${scale})`;
       panel.style.opacity = opacity;
     }
   }
 
   function loop() {
     if (!paused) {
-      strip.scrollLeft += SPEED;
+      // Recalculate maxScroll inside loop to handle dynamic layout changes
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      
+      strip.scrollLeft += speed;
 
-      // 🔑 INVISIBLE RECENTER — NO BLINK
-      if (strip.scrollLeft >= baseOffset * 2) {
-        strip.scrollLeft -= baseOffset;
-      } else if (strip.scrollLeft <= 0) {
-        strip.scrollLeft += baseOffset;
+      // REVERSE LOGIC (Ping-Pong)
+      // If we reach the end (or slightly past it due to sub-pixel rendering)
+      if (strip.scrollLeft >= maxScroll - 1 && speed > 0) {
+        speed = -MAX_SPEED;
+      }
+      
+      // If we reach the start
+      if (strip.scrollLeft <= 0 && speed < 0) {
+        speed = MAX_SPEED;
       }
     }
 
@@ -279,18 +290,16 @@ if (strip && panels.length) {
     requestAnimationFrame(loop);
   }
 
+  // Interactions
   strip.addEventListener("mouseenter", () => paused = true);
   strip.addEventListener("mouseleave", () => paused = false);
 
   window.addEventListener("resize", () => {
-    panelWidth = panels[0].offsetWidth + GAP;
-    baseOffset = panelWidth * total;
-    strip.scrollLeft = baseOffset;
+    setPadding();
   });
 
   requestAnimationFrame(loop);
 }
-
 /* ===============================
    FORMSPREE SUBMIT HANDLER
 ================================ */
@@ -379,3 +388,4 @@ audioPlayer.addEventListener("click", (e) => {
     audioPlayer.classList.remove("playing");
   }
 });
+
