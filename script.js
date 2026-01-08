@@ -370,8 +370,9 @@ const startAudio = () => {
     });
 };
 
-// Try to play when the window finishes loading
-window.addEventListener("load", startAudio);
+window.addEventListener("load", () => {
+  audioPlayer.classList.add("expanded");
+});
 
 /* ===============================
    MANUAL TOGGLE (USER CONTROL)
@@ -388,4 +389,3 @@ audioPlayer.addEventListener("click", (e) => {
     audioPlayer.classList.remove("playing");
   }
 });
-

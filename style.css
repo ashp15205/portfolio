@@ -703,6 +703,7 @@ body::after {
 .skill-card {
   height: 120px;
   width: 140px;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px);
   border-radius: 16px;
@@ -1111,8 +1112,14 @@ color: #010101;
   transition: width 0.45s cubic-bezier(.22,.61,.36,1);
 }
 
+.audio-player.expanded,
 .audio-player:hover {
   width: 220px;
+}
+.audio-player.expanded .music-info,
+.audio-player:hover .music-info {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 
@@ -1328,30 +1335,6 @@ color: #010101;
     0 12px 28px rgba(0,0,0,0.45);
 }
 
-/* =====================================================
-   AUDIO DISC PLAYER
-===================================================== */
-
-.audio-player:hover .disc {
-  transform: scale(1.1);
-  box-shadow:
-    0 0 32px rgba(111,186,255,0.9),
-    0 0 60px rgba(111,186,255,0.45);
-}
-
-.audio-player:active .disc {
-  transform: scale(0.94);
-}
-
-/* idle floating motion */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.audio-player {
-  animation: float 4s ease-in-out infinite;
-}
 
 /* =====================================================
    ACCESSIBILITY – REDUCED MOTION
