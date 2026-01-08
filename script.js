@@ -339,53 +339,29 @@ if (form) {
   });
 }
 
-/* ===============================
-   ROBUST AUTO PLAY HANDLER
-================================ */
 const audioPlayer = document.getElementById("audioPlayer");
 const bgMusic = document.getElementById("bgMusic");
 
-/**
- * Attempts to play audio and handles browser restrictions
- */
-const startAudio = () => {
-  bgMusic.play()
-    .then(() => {
-      // Autoplay started successfully
-      audioPlayer.classList.add("playing");
-    })
-    .catch(() => {
-      console.log("Autoplay blocked. Music will start on first user interaction.");
-      
-      // Fallback: Start music on the very first click anywhere on the page
-      const playOnInteraction = () => {
-        bgMusic.play().then(() => {
-          audioPlayer.classList.add("playing");
-          // Remove listener after success to prevent re-triggering
-          document.removeEventListener("click", playOnInteraction);
-        });
-      };
-      
-      document.addEventListener("click", playOnInteraction);
-    });
-};
-
+/* PAGE LOAD → EXPANDED */
 window.addEventListener("load", () => {
   audioPlayer.classList.add("expanded");
 });
 
-/* ===============================
-   MANUAL TOGGLE (USER CONTROL)
-================================ */
+/* CLICK → PLAY / PAUSE */
 audioPlayer.addEventListener("click", (e) => {
-  // Prevent the global document "click" fallback from interference
-  e.stopPropagation(); 
+  e.stopPropagation();
+
+  // Remove initial expanded once user interacts
+  audioPlayer.classList.remove("expanded");
 
   if (bgMusic.paused) {
     bgMusic.play();
     audioPlayer.classList.add("playing");
+    audioPlayer.classList.remove("paused");
   } else {
     bgMusic.pause();
     audioPlayer.classList.remove("playing");
+    audioPlayer.classList.add("paused");
   }
 });
+

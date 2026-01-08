@@ -1087,7 +1087,7 @@ color: #010101;
 
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 
   height: 68px;
   width: 68px;
@@ -1114,12 +1114,44 @@ color: #010101;
 
 .audio-player.expanded,
 .audio-player:hover {
-  width: 220px;
+  width: 237px;
+  height: 70px;
 }
 .audio-player.expanded .music-info,
 .audio-player:hover .music-info {
   opacity: 1;
   transform: translateX(0);
+}
+.fav-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.834);
+}
+/* ===============================
+   COMPACT WHEN PLAYING (DEFAULT)
+================================ */
+
+.audio-player.playing {
+  width: 68px;
+}
+
+/* Expand on hover EVEN when playing */
+.audio-player.playing:hover {
+  width: 237px;
+}
+
+/* SHOW INFO WHEN EXPANDED OR HOVER */
+.audio-player.expanded .music-info,
+.audio-player:hover .music-info {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* FORCE COMPACT WHEN PLAYING OR PAUSED (NO HOVER) */
+.audio-player.playing:not(:hover),
+.audio-player.paused:not(:hover) {
+  width: 68px;
 }
 
 
