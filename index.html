@@ -32,6 +32,28 @@
 </head>
 
 <body>
+  <div id="preloader">
+  <canvas id="matrix"></canvas>
+
+  <div class="loader-core">
+    <h1 class="boot-title">LOADING <span>PLAYER PROFILE</span></h1>
+
+    <div class="hud-bar">
+      <div class="hud-fill"></div>
+    </div>
+
+    <div class="boot-text">
+      <span id="boot-status">Loading Modules</span>
+      <span id="boot-percent">0%</span>
+    </div>
+
+    <div class="terminal-line">
+      <span class="prompt">root@ashish:~$</span>
+      <span id="terminal-command"></span><span class="cursor">█</span>
+    </div>
+  </div>
+</div>
+
   <!-- BACKGROUND VIDEO -->
   <video class="bg-video" autoplay muted loop playsinline>
     <source src="./assets/v.mp4" type="video/mp4">
@@ -373,7 +395,7 @@
 
 
       <!-- RIGHT FORM -->
-      <form action="https://formspree.io/f/mkogdjln" method="POST" class="contact-form"> <!-- CREATE YOUR FORM ON FORMSPREE AND REPLACE THAT LINK IN ACTION -->
+      <form action="https://formspree.io/f/mkogdjln" method="POST" class="contact-form">
         <input type="text" name="name" placeholder="Your Name" required />
         <input type="text" name="_gotcha" style="display:none">
 

@@ -364,4 +364,86 @@ audioPlayer.addEventListener("click", (e) => {
     audioPlayer.classList.add("paused");
   }
 });
+/* ===== HUD MATRIX BOOT LOADER ===== */
 
+const loader = document.getElementById("preloader");
+const bar = document.querySelector(".hud-fill");
+const percent = document.getElementById("boot-percent");
+const bootStatus = document.getElementById("boot-status");
+const terminal = document.getElementById("terminal-command");
+
+/* Matrix Rain */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function resizeMatrix() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeMatrix();
+window.addEventListener("resize", resizeMatrix);
+
+const chars = "アカサタナ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = window.innerWidth < 600 ? 12 : 16;
+const columns = Math.floor(canvas.width / fontSize);
+const drops = Array(columns).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#7cffcb";
+  ctx.font = fontSize + "px monospace";
+
+  drops.forEach((y, i) => {
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * fontSize, y * fontSize);
+
+    if (y * fontSize > canvas.height && Math.random() > 0.97) drops[i] = 0;
+    drops[i]++;
+  });
+}
+
+const matrixLoop = setInterval(drawMatrix, 40);
+
+/* Progress + Status */
+let progress = 0;
+const stages = [
+  "Booting Kernel",
+  "Mounting File System",
+  "Loading UI Engine",
+  "Injecting Animations",
+  "Launching Portfolio"
+];
+let stageIndex = 0;
+
+const bootInterval = setInterval(() => {
+  progress++;
+  bar.style.width = progress + "%";
+  percent.textContent = progress + "%";
+
+  if (progress % 20 === 0 && stageIndex < stages.length) {
+    bootStatus.textContent = stages[stageIndex++];
+  }
+
+  if (progress >= 100) {
+    clearInterval(bootInterval);
+    typeCommand();
+  }
+}, 50); // ~9 seconds
+
+/* Terminal Typing */
+const command = "launch portfolio";
+let charIndex = 0;
+
+function typeCommand() {
+  const typing = setInterval(() => {
+    terminal.textContent += command[charIndex++];
+    if (charIndex >= command.length) {
+      clearInterval(typing);
+      setTimeout(() => {
+        loader.classList.add("hidden");
+        clearInterval(matrixLoop);
+      }, 1200);
+    }
+  }, 90);
+}
