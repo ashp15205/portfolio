@@ -429,7 +429,8 @@ const bootInterval = setInterval(() => {
     clearInterval(bootInterval);
     typeCommand();
   }
-}, 50); // ~9 seconds
+}, 30); // ~5 seconds
+
 
 /* Terminal Typing */
 const command = "launch portfolio";
