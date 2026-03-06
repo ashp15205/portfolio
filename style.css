@@ -1515,6 +1515,119 @@ color: #010101;
 
 @keyframes blink { 50% { opacity: 0; } }
 
+
+.featured-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 420px;
+}
+
+.featured-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.featured-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #a0d1ff;
+  padding: 12px 16px 8px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.featured-preview {
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-preview img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.featured-card:hover .featured-preview img {
+  transform: scale(1.05);
+}
+
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.featured-card:hover .featured-overlay {
+  opacity: 1;
+}
+
+.visit-btn {
+  background: #fff;
+  color: #000;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.visit-btn:hover {
+  background: #a0d1ff;
+}
+
+.featured-info {
+  padding: 14px 16px 18px;
+}
+
+.featured-info h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #fff;
+}
+
+.featured-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+.view-projects-btn {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  max-width: 420px;
+  width: 100%;
+}
+
+.view-projects-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
 @media (max-width: 500px) {
   .loader-core { width: 90%; }
   .boot-title { font-size: 1.2rem; }
