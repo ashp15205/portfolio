@@ -1514,38 +1514,3 @@ color: #010101;
 }
 
 @keyframes blink { 50% { opacity: 0; } }
-/* =====================================================
-   FEATURED CARD — MOBILE
-===================================================== */
-@media (max-width: 768px) {
-  .hero-media {
-    order: -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  .featured-card {
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .view-projects-btn {
-    max-width: 300px;
-  }
-}
-
-@media (max-width: 420px) {
-  .featured-card {
-    max-width: 260px;
-  }
-
-  .view-projects-btn {
-    max-width: 260px;
-  }
-
-  .featured-preview img {
-    height: 160px;
-  }
-}
