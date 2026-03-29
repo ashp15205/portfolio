@@ -264,6 +264,7 @@ body::after {
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -573,7 +574,7 @@ body::after {
 
 .section h2 {
   font-size: 4rem;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   text-align: center;
 
   background: linear-gradient(
@@ -584,6 +585,7 @@ body::after {
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 
   animation: shine 3s linear infinite;
@@ -746,213 +748,202 @@ body::after {
 }
 
 /* ===============================
-   PROJECTS STRIP (FIGMA STYLE)
+   PROJECTS SLIDER (NETFLIX STYLE)
 ================================ */
-/* Remove negative margin from projects-strip */
-.projects-strip {
+.projects-viewport {
+  position: relative;
   display: flex;
-  gap: 20px;
-  padding: 40px; /* Keep this */
-  overflow-x: auto;
-  overflow-y: visible;
-  scroll-snap-type: none;
-  -webkit-overflow-scrolling: touch;
-  perspective: 1600px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  margin-top: -40px; /* Changed from -40px to 0 */
-  scroll-behavior: auto;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0;
+  /* Allow hovered cards to lift without clipping */
+  overflow: visible;
 }
 
-.projects-strip::-webkit-scrollbar {
+.projects-row {
+  display: flex;
+  flex: 1;
+  gap: 30px;
+  overflow-x: auto;
+  overflow-y: visible; /* Let cards lift on hover */
+  scroll-behavior: smooth;
+  padding: 25px 10px 40px; /* extra bottom pad for lift effect */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects-row::-webkit-scrollbar {
   display: none;
 }
 
-/* PROJECT PANEL - matches original card size */
-.project-panel {
-  flex: 0 0 320px;
-  height: 500px;
-  border-radius: 20px;
-  background: rgb(11, 10, 10);
-  border: 2px solid rgb(143, 143, 143);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+.project-card {
+  flex: 0 0 350px;
+  height: 510px;
+  border-radius: 24px;
+  background: rgba(8, 15, 35, 0.75);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(111, 186, 255, 0.15);
   display: flex;
   flex-direction: column;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  pointer-events: auto;
-
-}
-
-.project-panel:hover {
-  /* Keep only box-shadow transition */
-  transition: box-shadow 0.35s ease;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-}
-
-
-
-/* Hover effect */
-.project-panel:hover {
-  box-shadow: 0px 10px 28px rgba(21, 0, 255, 0.6);
-  opacity: 1 !important;
-  background: rgb(0, 0, 0);
-  border: 1.5px solid rgb(80, 255, 249);
-}
-
-/* PROJECT IMAGE */
-.project-panel .project-image {
-  height: 200px;
   overflow: hidden;
-  flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease, border-color 0.35s ease;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.5);
 }
 
-.project-panel .project-image img {
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(111, 186, 255, 0.2), 0 0 0 1px rgba(111, 186, 255, 0.4);
+  border-color: rgba(111, 186, 255, 0.4);
+}
+
+.project-img {
+  height: 220px;
+  width: 100%;
+  overflow: hidden;
+  background: #050b1a;
+}
+
+.project-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   transition: transform 0.6s ease;
 }
 
-.project-panel:hover .project-image img {
-  transform: scale(1.02);
+.project-card:hover .project-img img {
+  transform: scale(1.1);
 }
 
-/* PROJECT CONTENT */
-.project-panel .project-content {
-  padding: 20px 22px 24px;
+.project-info {
+  padding: 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.project-panel .project-content h3 {
-  font-size: 1.25rem;
-  margin-bottom: 8px;
+.project-info h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
   color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
-.project-panel .project-content p {
-  font-size: 0.92rem;
+.project-info p {
+  font-size: 0.95rem;
   line-height: 1.6;
   color: rgba(235, 245, 255, 0.8);
-  margin-bottom: 14px;
-  flex-grow: 1;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* TECH STACK */
-.project-panel .project-tech {
+.project-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 14px;
-  max-height: 60px; /* Limit height */
-  overflow: hidden; /* Hide overflow tags */
+  margin-bottom: auto;
 }
 
-.project-panel .project-tech span {
-  font-size: 0.75rem;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.205);
-  color: rgba(255, 255, 255, 0.9);
+.project-tags span {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: rgba(111, 186, 255, 0.1);
+  color: #6fbaff;
+  border: 1px solid rgba(111, 186, 255, 0.2);
 }
 
-/* PROJECT LINKS */
-.project-panel .project-links {
+.project-footer {
+  margin-top: 24px;
   display: flex;
-  flex-direction: row; /* Force horizontal layout */
-  align-items: center;
   gap: 12px;
-  margin-top: auto; /* Push to bottom */
-  flex-wrap: nowrap;
 }
 
-.project-panel .project-icon {
-  width: 40px;
-  height: 40px;
+.project-footer a {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-live {
+  background: linear-gradient(135deg, #319bff, #29ff50);
+  color: #050b1a;
+}
+
+.btn-live:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(41, 255, 80, 0.4);
+}
+
+.btn-gh {
+  background: rgba(255,255,255,0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-gh:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* SCROLL BUTTONS */
+.scroll-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: rgb(0, 0, 0);
-  backdrop-filter: blur(10px);
+  background: #00f5ff; /* High visibility cyan */
+  color: #050b1a;
+  border: 2px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(0, 4, 255);
-  color: #ffffff;
-  transition:
-    transform 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 
+    0 0 20px rgba(0, 245, 255, 0.6),
+    0 0 40px rgba(0, 245, 255, 0.3);
+  font-size: 1.2rem;
 }
 
-.project-panel .project-icon:hover {
-  transform: translateY(-2px) scale(1.12);
-  box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.263),
-    0 0 22px rgb(255, 255, 255);
-}
-
-/* SVG icons */
-.project-panel .project-icon::before {
-  content: "";
-  width: 20px;
-  height: 20px;
+.scroll-nav:hover {
   background: #ffffff;
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-.project-panel .project-image {
-  height: 200px;
-  overflow: visible;  /* Changed from hidden to show rounded corners */
-  flex-shrink: 0;
-  position: relative;
-  padding: 10px;  /* Added padding */
+  color: #00f5ff;
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.8),
+    0 0 60px rgba(0, 245, 255, 0.5);
 }
 
-.project-panel .project-image img {
-  border-radius: 10px;  /* Rounded corners for image */
-  transition: transform 0.6s ease, filter 0.4s ease;
-  filter: brightness(0.9);
+.scroll-nav.prev { left: -25px; }
+.scroll-nav.next { right: -25px; }
+
+@media (max-width: 1350px) {
+  .scroll-nav.prev { left: 10px; }
+  .scroll-nav.next { right: 10px; }
 }
 
-.project-panel .project-icon.live::before {
-  mask-image: url("assets/link.svg");
-  -webkit-mask-image: url("assets/link.svg");
-}
-
-.project-panel .project-icon.github::before {
-  mask-image: url("assets/github.png");
-  -webkit-mask-image: url("assets/github.png");
-}
-
-/* =====================================================
-   PROJECTS — MOBILE AUTO SCROLL MODE
-===================================================== */
 @media (max-width: 768px) {
-
-  .projects-strip {
-    perspective: none !important;
-  }
-
-  .project-panel {
-    transform: none !important;
-    opacity: 1 !important;
-    will-change: auto !important;
-  }
-
-  /* Kill all nth-child 3D rules */
-  .project-panel:nth-child(n) {
-    transform: none !important;
-    opacity: 1 !important;
-  }
+  .project-card { flex: 0 0 300px; height: 480px; }
+  .scroll-nav { display: none; } /* On mobile, let them touch scroll */
 }
+
+/* Cleanup finished */
 
 
 

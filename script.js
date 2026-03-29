@@ -222,84 +222,39 @@ if (editor && !editor.querySelector(".coding-stats")) {
 }
 
 
-/* =====================================================
-   PROJECT STRIP — PERFECT PING-PONG (5 CARDS)
-===================================================== */
-const strip = document.querySelector(".projects-strip");
-const panels = Array.from(strip?.children || []);
+/* ===============================
+   PROJECTS SLIDER LOGIC
+================================ */
+const projectsRow = document.getElementById("projectsRow");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
-if (strip && panels.length) {
-  const GAP = 25; 
-  let speed = 2.0; 
-  const MAX_SPEED = 2.5; 
+if (projectsRow && prevBtn && nextBtn) {
+  const scrollAmount = 400; // Adjust based on card width + gap
 
-  // 1. Reset Content (No Clones)
-  strip.innerHTML = "";
-  panels.forEach(p => strip.appendChild(p));
-
-  // 2. Set dynamic padding so end cards can reach middle
-  const setPadding = () => {
-    const sidePadding = strip.offsetWidth / 2 - (panels[0].offsetWidth / 2);
-    strip.style.paddingLeft = `${sidePadding}px`;
-    strip.style.paddingRight = `${sidePadding}px`;
-  };
-
-  setPadding();
-
-  // 3. Animation Logic
-  let paused = false;
-
-  function updateTransforms() {
-    const center = strip.offsetWidth / 2;
-    const stripRect = strip.getBoundingClientRect();
-
-    for (const panel of strip.children) {
-      const rect = panel.getBoundingClientRect();
-      const panelCenter = rect.left - stripRect.left + rect.width / 2;
-      const dist = (panelCenter - center) / strip.offsetWidth;
-
-      const rotate = dist * -25;
-      const scale = 1 - Math.min(Math.abs(dist) * 0.2, 0.2);
-      const opacity = 1 - Math.min(Math.abs(dist) * 0.6, 0.5);
-
-      panel.style.transform = `rotateY(${rotate}deg) scale(${scale})`;
-      panel.style.opacity = opacity;
-    }
-  }
-
-  function loop() {
-    if (!paused) {
-      // Recalculate maxScroll inside loop to handle dynamic layout changes
-      const maxScroll = strip.scrollWidth - strip.clientWidth;
-      
-      strip.scrollLeft += speed;
-
-      // REVERSE LOGIC (Ping-Pong)
-      // If we reach the end (or slightly past it due to sub-pixel rendering)
-      if (strip.scrollLeft >= maxScroll - 1 && speed > 0) {
-        speed = -MAX_SPEED;
-      }
-      
-      // If we reach the start
-      if (strip.scrollLeft <= 0 && speed < 0) {
-        speed = MAX_SPEED;
-      }
-    }
-
-    updateTransforms();
-    requestAnimationFrame(loop);
-  }
-
-  // Interactions
-  strip.addEventListener("mouseenter", () => paused = true);
-  strip.addEventListener("mouseleave", () => paused = false);
-
-  window.addEventListener("resize", () => {
-    setPadding();
+  nextBtn.addEventListener("click", () => {
+    projectsRow.scrollBy({ left: scrollAmount, behavior: "smooth" });
   });
 
-  requestAnimationFrame(loop);
+  prevBtn.addEventListener("click", () => {
+    projectsRow.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  });
+
+  // Optional: Auto-hide buttons if at start/end
+  projectsRow.addEventListener("scroll", () => {
+    const maxScroll = projectsRow.scrollWidth - projectsRow.clientWidth;
+    prevBtn.style.opacity = projectsRow.scrollLeft <= 5 ? "0" : "1";
+    prevBtn.style.pointerEvents = projectsRow.scrollLeft <= 5 ? "none" : "auto";
+    
+    nextBtn.style.opacity = projectsRow.scrollLeft >= maxScroll - 5 ? "0" : "1";
+    nextBtn.style.pointerEvents = projectsRow.scrollLeft >= maxScroll - 5 ? "none" : "auto";
+  });
+  
+  // Initial state check
+  prevBtn.style.opacity = "0";
+  prevBtn.style.pointerEvents = "none";
 }
+
 /* ===============================
    FORMSPREE SUBMIT HANDLER
 ================================ */
