@@ -62,6 +62,7 @@ if (window.Lenis) {
     duration: 1.2,
     easing: t => 1 - Math.pow(2, -10 * t)
   });
+  window.lenisObj = lenis;
 
   function raf(time) {
     lenis.raf(time);
@@ -109,6 +110,18 @@ const navLinks = [...document.querySelectorAll(".navbar a")];
 const indicator = document.querySelector(".nav-indicator");
 const navbar = document.querySelector(".navbar");
 
+navLinks.forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    const targetId = link.getAttribute("href");
+    if (window.lenisObj) {
+      window.lenisObj.scrollTo(targetId, { offset: -80 });
+    } else {
+      document.querySelector(targetId).scrollIntoView({ behavior: "smooth" });
+    }
+  });
+});
+
 if (indicator && navbar) {
   function getRect(link) {
     const r = link.getBoundingClientRect();
@@ -125,10 +138,12 @@ if (indicator && navbar) {
     );
     i = Math.max(i, 0);
 
-    const from = getRect(navLinks[i]);
-    indicator.style.transform = `translateX(${from.x}px)`;
-    indicator.style.width = `${from.w}px`;
-    indicator.style.opacity = 1;
+    if (navLinks[i]) {
+      const from = getRect(navLinks[i]);
+      indicator.style.transform = `translateX(${from.x}px)`;
+      indicator.style.width = `${from.w}px`;
+      indicator.style.opacity = 1;
+    }
 
     navLinks.forEach((l, idx) => l.classList.toggle("active", idx === i));
   }
@@ -223,37 +238,8 @@ if (editor && !editor.querySelector(".coding-stats")) {
 
 
 /* ===============================
-   PROJECTS SLIDER LOGIC
+   PROJECTS SLIDER LOGIC (REMOVED)
 ================================ */
-const projectsRow = document.getElementById("projectsRow");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-
-if (projectsRow && prevBtn && nextBtn) {
-  const scrollAmount = 400; // Adjust based on card width + gap
-
-  nextBtn.addEventListener("click", () => {
-    projectsRow.scrollBy({ left: scrollAmount, behavior: "smooth" });
-  });
-
-  prevBtn.addEventListener("click", () => {
-    projectsRow.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-  });
-
-  // Optional: Auto-hide buttons if at start/end
-  projectsRow.addEventListener("scroll", () => {
-    const maxScroll = projectsRow.scrollWidth - projectsRow.clientWidth;
-    prevBtn.style.opacity = projectsRow.scrollLeft <= 5 ? "0" : "1";
-    prevBtn.style.pointerEvents = projectsRow.scrollLeft <= 5 ? "none" : "auto";
-    
-    nextBtn.style.opacity = projectsRow.scrollLeft >= maxScroll - 5 ? "0" : "1";
-    nextBtn.style.pointerEvents = projectsRow.scrollLeft >= maxScroll - 5 ? "none" : "auto";
-  });
-  
-  // Initial state check
-  prevBtn.style.opacity = "0";
-  prevBtn.style.pointerEvents = "none";
-}
 
 /* ===============================
    FORMSPREE SUBMIT HANDLER
@@ -319,87 +305,55 @@ audioPlayer.addEventListener("click", (e) => {
     audioPlayer.classList.add("paused");
   }
 });
-/* ===== HUD MATRIX BOOT LOADER ===== */
-
+/* ===== CREATIVE PREMIUM BOOT LOADER ===== */
 const loader = document.getElementById("preloader");
-const bar = document.querySelector(".hud-fill");
-const percent = document.getElementById("boot-percent");
-const bootStatus = document.getElementById("boot-status");
-const terminal = document.getElementById("terminal-command");
+const loaderFill = document.getElementById("loader-bar-fill");
+const loaderCount = document.getElementById("loader-count");
+const loaderPhrase = document.getElementById("loader-phrase");
 
-/* Matrix Rain */
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-
-function resizeMatrix() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeMatrix();
-window.addEventListener("resize", resizeMatrix);
-
-const chars = "アカサタナ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const fontSize = window.innerWidth < 600 ? 12 : 16;
-const columns = Math.floor(canvas.width / fontSize);
-const drops = Array(columns).fill(1);
-
-function drawMatrix() {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#7cffcb";
-  ctx.font = fontSize + "px monospace";
-
-  drops.forEach((y, i) => {
-    const text = chars[Math.floor(Math.random() * chars.length)];
-    ctx.fillText(text, i * fontSize, y * fontSize);
-
-    if (y * fontSize > canvas.height && Math.random() > 0.97) drops[i] = 0;
-    drops[i]++;
-  });
-}
-
-const matrixLoop = setInterval(drawMatrix, 40);
-
-/* Progress + Status */
-let progress = 0;
-const stages = [
-  "Booting Kernel",
-  "Mounting File System",
-  "Loading UI Engine",
-  "Injecting Animations",
-  "Launching Portfolio"
+const phrases = [
+  "Awakening the pixels...",
+  "Brewing the coffee...",
+  "Aligning the divs...",
+  "Preparing the magic...",
+  "Almost there..."
 ];
-let stageIndex = 0;
+
+let progress = 0;
+let phraseIndex = 0;
+
+const phraseInterval = setInterval(() => {
+  if (loaderPhrase) {
+    loaderPhrase.style.opacity = 0;
+    setTimeout(() => {
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      loaderPhrase.textContent = phrases[phraseIndex];
+      loaderPhrase.style.opacity = 1;
+    }, 300);
+  }
+}, 1400);
 
 const bootInterval = setInterval(() => {
-  progress++;
-  bar.style.width = progress + "%";
-  percent.textContent = progress + "%";
+  progress += Math.random() * 6 + 2; 
+  if (progress > 100) progress = 100;
+  
+  if (loaderFill) loaderFill.style.width = progress + "%";
+  if (loaderCount) loaderCount.textContent = Math.floor(progress);
 
-  if (progress % 20 === 0 && stageIndex < stages.length) {
-    bootStatus.textContent = stages[stageIndex++];
-  }
-
-  if (progress >= 100) {
+  if (progress === 100) {
     clearInterval(bootInterval);
-    typeCommand();
-  }
-}, 30); // ~5 seconds
-
-
-/* Terminal Typing */
-const command = "launch portfolio";
-let charIndex = 0;
-
-function typeCommand() {
-  const typing = setInterval(() => {
-    terminal.textContent += command[charIndex++];
-    if (charIndex >= command.length) {
-      clearInterval(typing);
+    clearInterval(phraseInterval);
+    
+    if (loaderPhrase) {
+      loaderPhrase.style.opacity = 0;
       setTimeout(() => {
-        loader.classList.add("hidden");
-        clearInterval(matrixLoop);
-      }, 1200);
+        loaderPhrase.textContent = "Welcome.";
+        loaderPhrase.style.opacity = 1;
+      }, 300);
     }
-  }, 90);
-}
+    
+    setTimeout(() => {
+      if (loader) loader.classList.add("hidden");
+    }, 1000); // give time to read "Welcome."
+  }
+}, 80);

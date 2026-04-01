@@ -33,24 +33,20 @@
 
 <body>
   <div id="preloader">
-    <canvas id="matrix"></canvas>
+    <div class="preloader-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+    <div class="glass-overlay"></div>
 
-    <div class="loader-core">
-      <h1 class="boot-title">LOADING <span>PLAYER PROFILE</span></h1>
-
-      <div class="hud-bar">
-        <div class="hud-fill"></div>
+    <div class="loader-content-new">
+      <div class="counter-wrapper">
+        <span id="loader-count">0</span><span class="percent">%</span>
       </div>
-
-      <div class="boot-text">
-        <span id="boot-status">Loading Modules</span>
-        <span id="boot-percent">0%</span>
+      <div class="loading-bar-container">
+        <div class="loading-bar-fill" id="loader-bar-fill"></div>
       </div>
-
-      <div class="terminal-line">
-        <span class="prompt">root@ashish:~$</span>
-        <span id="terminal-command"></span><span class="cursor">█</span>
-      </div>
+      <div class="funny-text" id="loader-phrase">Initializing...</div>
     </div>
   </div>
 
@@ -108,7 +104,7 @@
             <a href="https://www.linkedin.com/in/ashishpatil2005/"><i class="fa-brands fa-linkedin-in"></i></a>
           </div>
 
-          <a href="assets/CV.pdf" class="resume-btn" target="_blank" rel="noopener noreferrer">
+          <a href="assets/resume copy.pdf" class="resume-btn" target="_blank" rel="noopener noreferrer">
             Resume
           </a>
 
@@ -296,12 +292,9 @@
 
   </section>
   <section id="projects" class="section">
-    <h2>Projects</h2>
+    <h2>Featured Projects</h2>
 
     <div class="projects-viewport">
-      <button class="scroll-nav prev" id="prevBtn" aria-label="Previous">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
 
       <div class="projects-row" id="projectsRow">
         <!-- 1. KodeBattle -->
@@ -316,7 +309,6 @@
             <div class="project-tags">
               <span>React</span>
               <span>Node.js</span>
-              <span>Socket.io</span>
               <span>Firebase</span>
             </div>
             <div class="project-footer">
@@ -337,10 +329,10 @@
             <p>A student-first hub for sharing verified interview experiences. Features structured logs for DSA, HR, and
               System Design rounds.</p>
             <div class="project-tags">
-              <span>Next.js 15</span>
+              <span>Next.js</span>
+              <span>TypeScript</span>
               <span>Supabase</span>
               <span>Tailwind CSS</span>
-              <span>Framer Motion</span>
             </div>
             <div class="project-footer">
               <a href="https://placement-chat-nu.vercel.app/" target="_blank" class="btn-live"><i
@@ -363,7 +355,7 @@
             <div class="project-tags">
               <span>JavaScript</span>
               <span>Python</span>
-              <span>PostgreSQL</span>
+              <span>Framer Motion</span>
             </div>
             <div class="project-footer">
               <a href="https://cet-buddy.vercel.app/" target="_blank" class="btn-live"><i
@@ -374,32 +366,7 @@
           </div>
         </div>
 
-        <!-- 4. Santulan AI -->
-        <div class="project-card">
-          <div class="project-img">
-            <img src="assets/santulan.png" alt="Santulan AI">
-          </div>
-          <div class="project-info">
-            <h3>Santulan AI</h3>
-            <p>An AI-powered wellness platform that automates personalized productivity workflows and task analysis
-              based on daily routines.</p>
-            <div class="project-tags">
-              <span>React.js</span>
-              <span>n8n</span>
-              <span>Node.js</span>
-              <span>Firebase</span>
-            </div>
-            <div class="project-footer">
-              <a href="https://santulan-ai.vercel.app/" target="_blank" class="btn-live"><i
-                  class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
-            </div>
-          </div>
-        </div>
       </div>
-
-      <button class="scroll-nav next" id="nextBtn" aria-label="Next">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
     </div>
   </section>
 
