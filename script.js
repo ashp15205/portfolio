@@ -188,7 +188,7 @@ if (window.THREE) {
    TYPEWRITER (FINAL)
 ======================= */
 
-const roles = ["Full-Stack Developer", "UI & UX Designer", "Competitive Coder"];
+const roles = ["Full-Stack AI Engineer", "LLM & Agentic Systems Developer", "Backend Engineer"];
 const typing = document.getElementById("typing");
 
 if (typing) {
